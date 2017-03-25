@@ -12,8 +12,8 @@
      (- (System/nanoTime) start#)))
 
 (def benchmarks
-  {:persistent-list {:name (.getSimpleName PersistentList)
-                     :measures {:conj  (fn [^PersistentList l i] (measure (conj l i)))}}
-   :array-list      {:name (.getSimpleName ArrayList)
-                     :measures {:conj (fn [^ArrayList l i] (measure (conj l i)))}}
-   })
+  [[:persistent-list (.getSimpleName PersistentList)
+    {:conj  (fn [^PersistentList l i] (measure (conj l i)))
+     :iter (fn [^PersistentList l] (measure (vec l)))}]
+   [:array-list (.getSimpleName ArrayList)
+    {:conj (fn [^ArrayList l i] (measure (conj l i)))}]])
