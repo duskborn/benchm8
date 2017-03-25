@@ -1,5 +1,8 @@
 (ns benchm8.server.view
-  (:require [hiccup.core :refer [html]]))
+  (:require [hiccup.core :refer [html]]
+            [clojure.data.json :as json]
+            [benchm8.server.benchmark :refer [benchmarks]]
+            [ring.util.response :as response]))
 
 (defn index-view []
   (html
@@ -7,8 +10,13 @@
       [:head
         [:meta {:charset "utf-8"}]
         [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
-        [:title "benchm8"]
-        [:link {:href "css/style.css" :rel "stylesheet"}]]
+        [:title "benchm8"]]
       [:body
         [:div#app]
         [:script {:src "js/compiled/benchm8.js"}]]]))
+
+(defn list-benchmarks []
+  (-> (json/write-str {:benchmarks (zipmap (keys benchmarks) (for [v (vals benchmarks)]
+                                                             (assoc v :measures (keys (:measures v)))))})
+      response/response
+      (response/content-type "application/json")))
