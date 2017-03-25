@@ -17,6 +17,6 @@
 
 (defn list-benchmarks []
   (-> (json/write-str {:benchmarks (zipmap (keys benchmarks) (for [v (vals benchmarks)]
-                                                             (assoc v :measures (keys (:measures v)))))})
+                                                               (assoc v :measures (keys (:measures v)))))})
       response/response
       (response/content-type "application/json")))

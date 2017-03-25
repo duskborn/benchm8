@@ -5,21 +5,24 @@
 
 (enable-console-print!)
 
-(println "This text is printed from src/benchm8/core.cljs. Go ahead and edit it and see reloading in action.")
-
 ;; define your app data so that it doesn't get over-written on reload
 
-(defonce app-state (atom {:text "Hello world!"}))
+(defonce app-state (atom {:text "Hello world!"
+                          :benchmarks {}}))
 
-(rum/defc benchm8-app <
-  rum/reactive
+(rum/defc benchm8-app < rum/reactive
   {:did-mount (fn [e] (ajax/GET "/benchmarks.json"
-                                {:handler (fn [response]
-                                            (swap! app-state assoc :text (str response)))}))}
+                                {:handler (fn [^PersistentArrayMap response]
+                                            (swap! app-state assoc :benchmarks (get response "benchmarks")))})
+                nil)}
   []
   [:div#benchm8-app
     [:style (css [:body {:font-size "16px"}])]
-    [:p (:text (rum/react app-state))]])
+    [:table
+      [:thead]
+      [:tbody
+        (for [bench (:benchmarks (rum/react app-state))]
+          [:tr [:td (pr-str bench)]])]]])
 
 (rum/mount (benchm8-app)
            (.getElementById js/document "app"))
