@@ -10,6 +10,10 @@
                  [org.clojure/clojurescript "1.9.229"]
                  [org.clojure/core.async "0.2.395"
                   :exclusions [org.clojure/tools.reader]]
+                 [ring "1.5.0"]
+                 [ring/ring-defaults "0.2.3"]
+                 [compojure "1.5.2"]
+                 [hiccup "1.0.5"]
                  [rum "0.10.8"]]
 
   :plugins [[lein-figwheel "0.5.9"]
@@ -22,32 +26,19 @@
   :cljsbuild {:builds
               [{:id "dev"
                 :source-paths ["src"]
-
-                ;; the presence of a :figwheel configuration here
-                ;; will cause figwheel to inject the figwheel client
-                ;; into your build
-                :figwheel {:on-jsload "benchm8.core/on-js-reload"
-                           ;; :open-urls will pop open your application
-                           ;; in the default browser once Figwheel has
-                           ;; started and complied your application.
-                           ;; Comment this out once it no longer serves you.
-                           :open-urls ["http://localhost:3449/index.html"]}
-
-                :compiler {:main benchm8.core
+                :figwheel {:on-jsload "benchm8.client.core/on-js-reload"
+                           ;; :open-urls ["http://localhost:3449/index.html"]
+                           }
+                :compiler {:main benchm8.client.core
                            :asset-path "js/compiled/out"
                            :output-to "resources/public/js/compiled/benchm8.js"
                            :output-dir "resources/public/js/compiled/out"
                            :source-map-timestamp true
-                           ;; To console.log CLJS data-structures make sure you enable devtools in Chrome
-                           ;; https://github.com/binaryage/cljs-devtools
                            :preloads [devtools.preload]}}
-               ;; This next build is an compressed minified build for
-               ;; production. You can build this with:
-               ;; lein cljsbuild once min
-               {:id "min"
+               {:id "min" ;; lein cljsbuild once min
                 :source-paths ["src"]
                 :compiler {:output-to "resources/public/js/compiled/benchm8.js"
-                           :main benchm8.core
+                           :main benchm8.client.core
                            :optimizations :advanced
                            :pretty-print false}}]}
 
@@ -60,25 +51,7 @@
              ;; Start an nREPL server into the running figwheel process
              ;; :nrepl-port 7888
 
-             ;; Server Ring Handler (optional)
-             ;; if you want to embed a ring handler into the figwheel http-kit
-             ;; server, this is for simple ring servers, if this
-
-             ;; doesn't work for you just run your own server :) (see lein-ring)
-
-             ;; :ring-handler hello_world.server/handler
-
-             ;; To be able to open files in your editor from the heads up display
-             ;; you will need to put a script on your path.
-             ;; that script will have to take a file path and a line number
-             ;; ie. in  ~/bin/myfile-opener
-             ;; #! /bin/sh
-             ;; emacsclient -n +$2 $1
-             ;;
-             ;; :open-file-command "myfile-opener"
-
-             ;; if you are using emacsclient you can just use
-             ;; :open-file-command "emacsclient"
+             :ring-handler benchm8.server.core/handler
 
              ;; if you want to disable the REPL
              ;; :repl false
@@ -87,19 +60,10 @@
              ;; :server-logfile "tmp/logs/figwheel-logfile.log"
              }
 
-
-  ;; setting up nREPL for Figwheel and ClojureScript dev
-  ;; Please see:
-  ;; https://github.com/bhauman/lein-figwheel/wiki/Using-the-Figwheel-REPL-within-NRepl
-
-
   :profiles {:dev {:dependencies [[binaryage/devtools "0.9.0"]
                                   [figwheel-sidecar "0.5.9"]
                                   [com.cemerick/piggieback "0.2.1"]]
-                   ;; need to add dev source path here to get user.clj loaded
-                   :source-paths ["src" "dev"]
-                   ;; for CIDER
-                   ;; :plugins [[cider/cider-nrepl "0.12.0"]]
+                   :source-paths ["src"]
                    :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}}}
 
 )

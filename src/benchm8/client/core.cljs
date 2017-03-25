@@ -1,4 +1,4 @@
-(ns benchm8.core
+(ns benchm8.client.core
   (:require [rum.core :as rum]))
 
 (enable-console-print!)
