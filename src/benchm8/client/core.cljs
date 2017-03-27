@@ -12,24 +12,23 @@
 
 (rum/defc bench-table [benchmarks]
   [:table
-   [:thead]
-   [:tbody
-    (for [bench benchmarks]
-      (let [key (nth bench 0)
-            class-name (nth bench 1)
-            measures (nth bench 2)]
-        [:tr
-         [:td key]
-         [:td class-name]
-         [:td (for [[name enabled] measures]
-                [:button (str name " " enabled)])]]))]])
+    [:thead]
+    [:tbody
+      (for [bench benchmarks]
+        (let [key (first bench)
+              measure-name (second bench)]
+          [:tr
+            [:td key]
+            [:td measure-name]
+            [:td
+              [:input {:type "checkbox" :checked false}]
+              [:input {:type "number" :value "0" :disabled true}]]]))]])
 
 (rum/defc benchm8-app < rum/reactive
   {:did-mount (fn [e] (ajax/GET "/benchmarks.json"
-                                {:handler (fn [benchs]
-                                            (swap! app-state assoc :benchmarks
-                                                   (for [[key name measures] benchs]
-                                                     [key name (zipmap measures (repeat false))])))})
+                                {:handler (fn [benchmarks]
+                                            (swap! app-state assoc :benchmarks (map #(conj %1 false 0) benchmarks))
+                                            nil)})
                 nil)}
   []
   [:div#benchm8-app

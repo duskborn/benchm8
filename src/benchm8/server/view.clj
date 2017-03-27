@@ -16,6 +16,6 @@
         [:script {:src "js/compiled/benchm8.js"}]]]))
 
 (defn list-benchmarks []
-  (-> (json/write-str (map #(assoc %1 2 (keys (last %1))) benchmarks))
+  (-> (json/write-str (map drop-last benchmarks))
       response/response
       (response/content-type "application/json")))
