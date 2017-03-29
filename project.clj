@@ -15,7 +15,6 @@
                  [ring/ring-defaults "0.2.3"]
                  [compojure "1.5.2"]
                  [hiccup "1.0.5"]
-                 [garden "1.3.2"]
                  [rum "0.10.8"]
                  [cljs-ajax "0.5.8"]]
 

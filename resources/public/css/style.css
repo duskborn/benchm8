@@ -1,0 +1,15 @@
+body {
+    font-size: 16px;
+    font-family: Roboto, sans-serif;
+}
+
+div.comp-check-box {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-color: #f0f0f0;
+}
+
+div.comp-check-box[data-checked=true] {
+    background-color: red;
+}
