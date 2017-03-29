@@ -6,6 +6,7 @@
 
 (defroutes app-routes
            (GET "/" [] (view/index-view))
+           (GET "/measure" {{:keys [keys]} :params} (view/measure-view keys))
            (GET "/benchmarks.json" [] (view/list-benchmarks))
            (route/not-found "not found"))
 

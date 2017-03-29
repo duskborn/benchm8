@@ -3,6 +3,10 @@ body {
     font-family: Roboto, sans-serif;
 }
 
+div.benchm8-app pre {
+    font-size: 12px;
+}
+
 div.comp-check-box {
     display: inline-block;
     width: 1em;

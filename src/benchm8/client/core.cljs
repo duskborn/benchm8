@@ -13,8 +13,8 @@
 (defn toggle-benchmark [state key enabled]
   (let [benchmarks (:benchmarks state)]
     (assoc state :benchmarks (for [benchmark benchmarks]
-                               (if (= key (nth benchmark 0))
-                                 (assoc benchmark 2 enabled)
+                               (if (= key (:key benchmark))
+                                 (assoc benchmark :enabled enabled)
                                  benchmark)))))
 
 
@@ -26,34 +26,35 @@
 
 (rum/defc benchm8-app < rum/reactive
                         {:did-mount (fn [state]
-                                      (data/get-benchmarks (fn [bchs]
-                                                             (swap! app-state assoc :benchmarks (map #(conj %1 false) bchs))))
+                                      (data/get-benchmarks #(swap! app-state assoc :benchmarks %))
                                       state)}
   []
   (let [state (rum/react app-state)
         benchmarks (:benchmarks state)
-        results (:results state)]
+        results (:results state)
+        status (:status state)]
     [:div.benchm8-app
      [:pre (with-out-str (cljs.pprint/pprint state))]
      (if (not-empty results)
        [:div.results "results"]
-       [:table
-        [:thead]
-        [:tbody
-         (for [benchmark benchmarks]
-           (let [key (nth benchmark 0)
-                 name (nth benchmark 1)
-                 enabled (nth benchmark 2)]
-             [:tr
-              [:td key]
-              [:td name]
-              [:td
-               (check-box enabled #(swap! app-state toggle-benchmark key %1))]]))]])]))
+
+       [:div.benchmarks
+        [:table
+         [:thead]
+         [:tbody
+          (for [benchmark benchmarks]
+            (let [{:keys [key name enabled]} benchmark]
+              [:tr
+               [:td key]
+               [:td name]
+               [:td (check-box enabled #(swap! app-state toggle-benchmark key %))]]))]]
+        [:button {:on-click (fn [_] (data/get-measure (map #(:key %) (filter #(:enabled %) benchmarks)) println))}
+         "run benchmarks"]])]))
 
 (rum/mount (benchm8-app) (.getElementById js/document "app"))
 
 (defn on-js-reload []
   ;; optionally touch your app-state to force rerendering depending on
   ;; your application
-  (swap! app-state update-in [:__figwheel_counter] inc)
+  ;; (swap! app-state update-in [:__figwheel_counter] inc)
 )

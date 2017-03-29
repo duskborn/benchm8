@@ -14,8 +14,19 @@
 (def benchmarks
   [[:persistent-list-conj
     (format "%s conj" (.getSimpleName PersistentList))
-    (fn [^PersistentList l i] (measure (conj l i)))]
+    (fn [l i] (conj l i))]
 
    [:array-list-conj
     (format "%s conj" (.getSimpleName ArrayList))
-    (fn [^ArrayList l i] (measure (conj l i)))]])
+    (fn [l i] (conj l i))]])
+
+
+(defn measure-benchmark [benchmark]
+  (let [funk (last benchmark)]
+    
+    )
+  )
+
+
+(defn measure-benchmarks [benchmarks]
+  (map #(measure-benchmark %) benchmarks))

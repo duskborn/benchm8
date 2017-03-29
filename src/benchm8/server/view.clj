@@ -16,7 +16,12 @@
         [:div#app]
         [:script {:src "js/compiled/benchm8.js"}]]]))
 
+(defn measure-view [keys]
+  (-> (json/write-str (vals keys))
+      response/response
+      (response/content-type "application/json")))
+
 (defn list-benchmarks []
-  (-> (json/write-str (map drop-last benchmarks))
+  (-> (json/write-str {:benchmarks (map drop-last benchmarks)})
       response/response
       (response/content-type "application/json")))
