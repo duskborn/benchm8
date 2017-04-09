@@ -1,10 +1,6 @@
 (ns benchm8.server.benchmark
-  (:import [clojure.lang PersistentList]
+  (:import [clojure.lang PersistentList PersistentVector]
            [java.util ArrayList]))
-
-(defrecord Benchmark
-  [meta-info
-   measures])
 
 (defmacro measure [& forms]
   `(let [start# (System/nanoTime)]
@@ -14,19 +10,25 @@
 (def benchmarks
   [[:persistent-list-conj
     (format "%s conj" (.getSimpleName PersistentList))
-    (fn [l i] (conj l i))]
+    {:initial-state (fn [] '())
+     :benchmarking conj}]
+
+   [:presistent-vector-conj
+    (format "%s conj" (.getSimpleName PersistentVector))
+    {:initial-state (fn [] [])
+     :benchmarking conj}]
 
    [:array-list-conj
     (format "%s conj" (.getSimpleName ArrayList))
-    (fn [l i] (conj l i))]])
+    {:initial-state (fn [] (ArrayList.))
+     :benchmarking conj}]])
 
 
-(defn measure-benchmark [benchmark]
-  (let [funk (last benchmark)]
-    
-    )
-  )
+(defn measure-benchmark [benchmark tries]
+  (let [{:keys [initial-state benchmarking]} benchmark]
+    (let [data (transient '())]
+      )))
 
 
 (defn measure-benchmarks [benchmarks]
-  (map #(measure-benchmark %) benchmarks))
+  (map #(measure-benchmark % 100) benchmarks))
