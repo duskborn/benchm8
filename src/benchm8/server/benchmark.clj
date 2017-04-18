@@ -11,23 +11,28 @@
   [[:persistent-list-conj
     (format "%s conj" (.getSimpleName PersistentList))
     {:initial-state (fn [] '())
-     :benchmarking conj}]
+     :bench-fn conj}]
 
    [:presistent-vector-conj
     (format "%s conj" (.getSimpleName PersistentVector))
     {:initial-state (fn [] [])
-     :benchmarking conj}]
+     :bench-fn conj}]
 
    [:array-list-conj
     (format "%s conj" (.getSimpleName ArrayList))
     {:initial-state (fn [] (ArrayList.))
-     :benchmarking conj}]])
+     :bench-fn conj}]])
+
+
+(defn measure-benchmark-step [{:keys [state bench-fn]} step]
+  {:state (bench-fn state step)
+   :bench-fn bench-fn})
 
 
 (defn measure-benchmark [benchmark tries]
-  (let [{:keys [initial-state benchmarking]} benchmark]
-    (let [data (transient '())]
-      )))
+  (let [{:keys [initial-state bench-fn]} benchmark]
+    (reduce measure-benchmark-step {:state (initial-state)
+                                    :bench-fn bench-fn} (range tries))))
 
 
 (defn measure-benchmarks [benchmarks]
