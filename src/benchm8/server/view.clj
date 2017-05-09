@@ -1,7 +1,6 @@
 (ns benchm8.server.view
   (:require [hiccup.core :refer [html]]
             [clojure.data.json :as json]
-            [benchm8.server.benchmark :refer [benchmarks]]
             [ring.util.response :as response]))
 
 (defn index-view []
@@ -18,10 +17,5 @@
 
 (defn measure-view [keys]
   (-> (json/write-str (vals keys))
-      response/response
-      (response/content-type "application/json")))
-
-(defn list-benchmarks []
-  (-> (json/write-str {:benchmarks (map drop-last benchmarks)})
       response/response
       (response/content-type "application/json")))
