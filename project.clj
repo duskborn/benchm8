@@ -13,6 +13,7 @@
                  [org.clojure/data.json "0.2.6"]
                  [ring "1.5.0"]
                  [ring/ring-defaults "0.2.3"]
+                 [ring/ring-jetty-adapter "1.5.0"]
                  [compojure "1.5.2"]
                  [hiccup "1.0.5"]
                  [rum "0.10.8"]
@@ -53,7 +54,7 @@
              ;; Start an nREPL server into the running figwheel process
              ;; :nrepl-port 7888
 
-             :ring-handler benchm8.server.core/handler
+             :ring-handler benchm8.server.core/benchm8-dev-handler
 
              ;; if you want to disable the REPL
              ;; :repl false
