@@ -1,19 +1,84 @@
-body {
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono|Fira+Sans:300');
+
+body, button {
     font-size: 16px;
-    font-family: Roboto, sans-serif;
+    font-family: 'Fira Sans', sans-serif;
 }
 
-div.benchm8-app pre {
-    font-size: 12px;
+* { outline: none }
+
+div.benchm8-app {
+  width: 1000px;
+  margin: auto;
 }
 
-div.comp-check-box {
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    background-color: #f0f0f0;
+div.benchm8-app > div.benchm8-app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-div.comp-check-box[data-checked=true] {
-    background-color: red;
+div.benchm8-app > div.benchm8-app-header > h1 {
+}
+
+div.benchm8-app > div.benchm8-app-header > button.run-tests {
+  text-transform: uppercase;
+  background-color: rgba(100, 221, 23, 0.2);
+  border: 1px solid rgba(100, 221, 23, 0.8);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+div.test-item {
+  padding: 8px;
+}
+
+div.test-item:first-child {
+  border-radius: 8px 8px 0px 0px;
+}
+
+div.test-item:last-child {
+  border-radius: 0px 0px 8px 8px;
+}
+
+div.test-item[data-success=true] {
+  background-color: rgba(100, 221, 23, 0.2);
+}
+
+div.test-item[data-success=false] {
+  background-color: rgba(213,0,0 ,0.2);
+}
+
+div.test-item > div.test-info {
+  overflow: hidden;
+  line-height: 24px;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+div.test-item > div.test-info > div.test-item-name {
+  float: left;
+}
+
+div.test-item > div.test-info > div.test-item-success {
+  float: right;
+}
+
+div.test-item > div.test-exception-traceback {
+  display: none;
+  background-color: rgba(255, 255, 255, 0.7);
+  color: rgba(213,0,0 ,1.0);
+  padding: 8px;
+  border: 1px solid rgba(213, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+div.test-item > div.test-exception-traceback > pre {
+  margin: 0;
+  font-family: 'Fira Mono', monospace;
+}
+
+div.test-item[data-success=false] > div.test-exception-traceback {
+  display: block;
+  margin-top: 8px;
 }

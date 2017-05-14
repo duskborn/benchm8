@@ -6,26 +6,38 @@
 
 ;; define your app data so that it doesn't get over-written on reload
 
-(defonce app-state (atom {:benchmarks []
-                          :results []}))
+(defonce app-state (atom {:test-results [{:name "test #0"
+                                          :success true
+                                          :exception nil
+                                          :exception-traceback nil
+                                          :time 200}
+                                         {:name "test #1"
+                                          :success false
+                                          :exception "AssertionError"
+                                          :exception-traceback "trace back xd"
+                                          :time nil}]}))
 
 
-(defn toggle-benchmark [state key enabled]
-  (let [benchmarks (:benchmarks state)]
-    (assoc state :benchmarks (for [benchmark benchmarks]
-                               (if (= key (:key benchmark))
-                                 (assoc benchmark :enabled enabled)
-                                 benchmark)))))
-
-
-(rum/defc check-box [checked on-check-state]
-  [:input {:type "checkbox"
-           :checked checked
-           :on-click (fn [_] (on-check-state (not checked)))}])
+(rum/defc test-item [result]
+  [:div.test-item {:data-success (str (:success result))}
+    [:div.test-info
+      [:div.test-item-name (:name result)]
+      [:div.test-item-success (if (:success result)
+                                (str (:time result) "ms")
+                                (:exception result))]]
+    [:div.test-exception-traceback
+      [:pre (:exception-traceback result)]]])
 
 
 (rum/defc benchm8-app < rum/reactive []
-  [:h1 "hey"])
+  (let [state (rum/react app-state)]
+    [:div.benchm8-app
+      [:div.benchm8-app-header
+        [:h1 "benchm8"]
+        [:button.run-tests "run tests"]]
+      [:div.tests-list
+        (for [result (:test-results state)]
+          (test-item result))]]))
 
 (rum/mount (benchm8-app) (.getElementById js/document "app"))
 
