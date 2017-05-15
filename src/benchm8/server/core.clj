@@ -7,15 +7,16 @@
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.adapter.jetty :refer [run-jetty]]))
 
-(defn benchm8-routes [cfg]
+(defn make-routes [cfg]
   (routes (GET "/" [] (view/index-view))
-          (GET "/measure" {{:keys [keys]} :params} (view/measure-view keys))
+          (GET "/ajax/get-test-results" [] (str cfg))
           (route/not-found "not found")))
 
-(defn benchm8-handler [cfg]
-  (wrap-defaults (benchm8-routes cfg) site-defaults))
+(defn make-handler [cfg]
+  (wrap-defaults (make-routes cfg) site-defaults))
 
-(def benchm8-dev-handler (benchm8-handler nil))
+(defn run-server [cfg]
+  (run-jetty (make-handler cfg) {:port 3000}))
 
 (defn -runServer [cfg]
-  (run-jetty (benchm8-handler cfg) {:port 3000}))
+  (run-server cfg))

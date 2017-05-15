@@ -34,7 +34,7 @@
     [:div.benchm8-app
       [:div.benchm8-app-header
         [:h1 "benchm8"]
-        [:button.run-tests "run tests"]]
+        [:button.run-tests {:on-click (fn [_] (data/get-test-results #(.log js/console %)))} "run tests"]]
       [:div.tests-list
         (for [result (:test-results state)]
           (test-item result))]]))
