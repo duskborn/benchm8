@@ -1,8 +1,4 @@
 (ns dev
-  (:require [benchm8.server.core :refer [make-handler]]
-            [benchm8.server.tests :refer [TestGroup]])
-  )
+  (:require [benchm8.server.core :refer [make-handler]]))
 
-(def handler (make-handler {:tests [{:set-up nil
-                                     :tests []
-                                     :tear-down nil}]}))
+(def handler (make-handler {:tests []}))

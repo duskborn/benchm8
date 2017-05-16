@@ -22,13 +22,14 @@
   :plugins [[lein-figwheel "0.5.9"]
             [lein-cljsbuild "1.1.5" :exclusions [[org.clojure/clojure]]]]
 
-  :source-paths ["src"]
+  :source-paths ["src/clj"]
+  :java-source-paths ["src/java"]
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
 
   :cljsbuild {:builds
               [{:id "dev"
-                :source-paths ["src"]
+                :source-paths ["src/clj"]
                 :figwheel {:on-jsload "benchm8.client.core/on-js-reload"
                            ;; :open-urls ["http://localhost:3449/index.html"]
                            }
@@ -39,7 +40,7 @@
                            :source-map-timestamp true
                            :preloads [devtools.preload]}}
                {:id "min" ;; lein cljsbuild once min
-                :source-paths ["src"]
+                :source-paths ["src/clj"]
                 :compiler {:output-to "resources/public/js/compiled/benchm8.js"
                            :main benchm8.client.core
                            :optimizations :advanced
@@ -48,7 +49,7 @@
   :profiles {:dev {:dependencies [[binaryage/devtools "0.9.0"]
                                   [figwheel-sidecar "0.5.9"]
                                   [com.cemerick/piggieback "0.2.1"]]
-                   :source-paths ["src" "dev"]
+                   :source-paths ["src/clj" "dev"]
                    :figwheel {:css-dirs ["resources/public/css"]
                               :ring-handler dev/handler}
                    :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}}}
