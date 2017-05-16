@@ -32,7 +32,9 @@
         [:button.run-tests {:on-click require-tests} "run tests"]]
       (if-let [test-results (:test-results state)]
         [:.results
-          [:a {:href (str "data:application/xml;charset=utf-8," test-results) :download "test-results.json"} "save results"]
+          [:.meta
+            [:.errors (str "errors: " (reduce #(+ %1 (if (get %2 "success") 0 1)) 0 test-results))]
+            [:a.save {:href (str "data:application/xml;charset=utf-8," test-results) :download "test-results.json"} "save results"]]
           [:.tests-list
             (for [test-result test-results]
               (test-item test-result))]])]))

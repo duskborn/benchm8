@@ -83,3 +83,22 @@ body, button {
   display: block;
   margin-top: 8px;
 }
+
+.results .meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+}
+
+.results .meta a.save {
+  display: block;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #000000;
+  background-color: rgba(100, 221, 23, 0.2);
+  border: 1px solid rgba(100, 221, 23, 0.8);
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 16px;
+}
