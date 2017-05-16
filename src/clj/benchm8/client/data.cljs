@@ -1,5 +1,8 @@
 (ns benchm8.client.data
   (:require [ajax.core :as ajax]))
 
-(defn get-test-results [callbacks]
-  (ajax/GET "/ajax/get-test-results" {:handler callback}))
+(defn run-tests [callbacks]
+  (ajax/GET "/ajax/run-tests" {:handler callback}))
+
+(defn get-state [callbacks]
+  (ajax/GET "/ajax/state" {:handler callback}))

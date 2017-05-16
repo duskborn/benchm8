@@ -6,16 +6,7 @@
 
 ;; define your app data so that it doesn't get over-written on reload
 
-(defonce app-state (atom {:test-results [{:name "test #0"
-                                          :success true
-                                          :exception nil
-                                          :exception-traceback nil
-                                          :time 200}
-                                         {:name "test #1"
-                                          :success false
-                                          :exception "AssertionError"
-                                          :exception-traceback "trace back xd"
-                                          :time nil}]}))
+(defonce app-state (atom nil))
 
 
 (rum/defc test-item [result]
@@ -35,9 +26,15 @@
       [:div.benchm8-app-header
         [:h1 "benchm8"]
         [:button.run-tests {:on-click (fn [_] (data/get-test-results #(.log js/console %)))} "run tests"]]
-      [:div.tests-list
-        (for [result (:test-results state)]
-          (test-item result))]]))
+      (if state
+        (let [test-results (:test-results state)
+              test-progress (:test-progress state)]
+          (if test-results
+            [:div.tests-list
+             (for [test-result test-results]
+               (test-item test-result))])
+          (if test-progress
+            [:div.test-progress (str test-progress)])))]))
 
 (rum/mount (benchm8-app) (.getElementById js/document "app"))
 
