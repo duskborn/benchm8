@@ -31,9 +31,11 @@
         [:h1 "benchm8"]
         [:button.run-tests {:on-click require-tests} "run tests"]]
       (if-let [test-results (:test-results state)]
-        [:.tests-list
-         (for [test-result test-results]
-           (test-item test-result))])]))
+        [:.results
+          [:a {:href (str "data:application/xml;charset=utf-8," test-results) :download "test-results.json"} "save results"]
+          [:.tests-list
+            (for [test-result test-results]
+              (test-item test-result))]])]))
 
 (rum/mount (benchm8-app) (.getElementById js/document "app"))
 

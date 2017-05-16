@@ -76,6 +76,7 @@ body, button {
 .test-item > .test-exception-traceback > pre {
   margin: 0;
   font-family: 'Fira Mono', monospace;
+  overflow-x: scroll;
 }
 
 .test-item[data-success=false] > .test-exception-traceback {
