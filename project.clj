@@ -17,7 +17,9 @@
                  [compojure "1.5.2"]
                  [hiccup "1.0.5"]
                  [rum "0.10.8"]
-                 [cljs-ajax "0.5.8"]]
+                 [cljs-ajax "0.5.8"]
+                 [org.clojure/java.jdbc "0.6.1"]
+                 [org.xerial/sqlite-jdbc "3.18.0"]]
 
   :plugins [[lein-figwheel "0.5.9"]
             [lein-cljsbuild "1.1.5" :exclusions [[org.clojure/clojure]]]]
