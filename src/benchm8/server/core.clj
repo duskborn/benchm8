@@ -33,10 +33,12 @@
 
 
 (defn make-routes [cfg]
-  (let [data (db/create-db (:db cfg))]
+  ;(let [data (db/create-db (:db cfg))]
     (routes (GET "/" [] (view/index-view))
             (GET "/ajax/get-tests" [] (view/results-view (map run-test (:tests cfg))))
-            (route/not-found "not found"))))
+            (route/not-found "not found"))
+    ;)
+  )
 
 (defn make-handler [cfg]
   (wrap-defaults (make-routes cfg) site-defaults))
