@@ -3,6 +3,7 @@
               :methods [#^{:static true} [runServer [Object] void]])
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
+            [benchm8.server.db :as db]
             [benchm8.server.view :as view]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.adapter.jetty :refer [run-jetty]]))
@@ -38,9 +39,10 @@
 
 
 (defn make-routes [cfg]
-  (routes (GET "/" [] (view/index-view))
-          (GET "/ajax/get-tests" [] (view/results-view (map run-test (:tests cfg))))
-          (route/not-found "not found")))
+  (let [data (db/create-db (:db cfg))]
+    (routes (GET "/" [] (view/index-view))
+            (GET "/ajax/get-tests" [] (view/results-view (map run-test (:tests cfg))))
+            (route/not-found "not found"))))
 
 (defn make-handler [cfg]
   (wrap-defaults (make-routes cfg) site-defaults))
