@@ -2,9 +2,6 @@
   (:require [clojure.java.jdbc :refer :all]))
 
 
-(defrecord DatabaseConfig [name create])
-
-
 (defn create-db [cfg]
   (let [db {:classname   "org.sqlite.JDBC"
             :subprotocol "sqlite"

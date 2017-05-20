@@ -9,12 +9,6 @@
             [ring.adapter.jetty :refer [run-jetty]]))
 
 
-(defrecord Test [test-name test-fn])
-
-
-(defrecord ServerConfig [db tests])
-
-
 (defn error-view [e]
   {:toString (.toString e)
    :printStackTrace (let [sw (java.io.StringWriter.)
